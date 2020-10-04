@@ -1,7 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { isEmail } from 'validator';
+import { startRegisterWithEmailPasswordName } from '../../actions/auth';
 import { removeError, setError } from '../../actions/ui';
 
 import { useForm } from '../../hooks/useForm';
@@ -10,6 +11,8 @@ import { useForm } from '../../hooks/useForm';
 export const RegisterScreen = () => {
 
     const dispatch = useDispatch();
+
+    const { msgError } = useSelector( state => state.ui)
 
     const [ formValues, handleInputChange ] = useForm({
         name: 'Renzo',
@@ -24,7 +27,7 @@ export const RegisterScreen = () => {
         e.preventDefault();
         
         if( isFormValid() ){
-            console.log('Formulario válido');
+            dispatch( startRegisterWithEmailPasswordName( email, password, name ) )
         } 
 
     }
@@ -59,11 +62,13 @@ export const RegisterScreen = () => {
             <form
             onSubmit={ handleRegister }
             >
-
-                <div className="auth__alert-error">
-                    Hola mundo
-                </div>
-
+                { 
+                msgError 
+                &&
+                (<div className="auth__alert-error">
+                    { msgError }
+                </div>)
+                }
                 <input
                     autoComplete="off"
                     className="auth__input"
@@ -103,7 +108,7 @@ export const RegisterScreen = () => {
                     className="btn btn-primary pointer btn-block mb-5 mt-5"
                     // disabled={ true }
                 >
-                    Login
+                    Register
                  </button>
                 
                 <Link 
