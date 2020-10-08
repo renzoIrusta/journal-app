@@ -61,6 +61,7 @@ export const RegisterScreen = () => {
             <h3 className="auth__title mb-5">Register</h3>
             <form
             onSubmit={ handleRegister }
+            className="animate__animated animate__fadeIn animate__faster"
             >
                 { 
                 msgError 

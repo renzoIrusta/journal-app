@@ -6,9 +6,9 @@ const initialState = {
     active: null
 }
 
-export const notesReducer = ( state = initialState, action ) => {
+export const notesReducer = (state = initialState, action) => {
 
-    switch (action.type){
+    switch (action.type) {
         case types.notesActive:
             return {
                 ...state,
@@ -16,14 +16,45 @@ export const notesReducer = ( state = initialState, action ) => {
                     ...action.payload
                 }
             }
-        
+
+        case types.notesAddNew:
+            return {
+                ...state,
+                notes: [ action.payload, ...state.notes ]
+            }
+
         case types.notesLoad:
             return {
                 ...state,
-                notes: [ ...action.payload ]
+                notes: [...action.payload]
             }
 
-        default: 
+        case types.notesUpdated:
+            return {
+                ...state,
+                notes: state.notes.map(
+                    note => note.id === action.payload.id
+                        ? action.payload.note
+                        : note
+                )
+                //  Este case sólo modifica la nota que es necesario modificar, y sólo si existe.
+            }
+
+        case types.noteDelete:
+            return {
+                ...state,
+                active: null,
+                notes: state.notes.filter(note => note.id !== action.payload)
+            }
+        
+        case types.noteLogoutCleaning:
+            return {
+                ...state,
+                active: null,
+                notes: []
+            }
+
+        default:
             return state;
     }
 

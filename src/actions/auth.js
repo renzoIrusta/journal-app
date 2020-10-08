@@ -2,6 +2,7 @@ import Swal from 'sweetalert2'
 
 import { googleAuthProvider, firebase } from "../firebase/firebase-config";
 import { types } from "../types/types"
+import { noteLogout } from './notes';
 import { uiFinishLoading, uiStartLoading } from "./ui";
 
 // Así como está abajo se hace cualquier petición asíncrona
@@ -71,7 +72,8 @@ export const startLgout = () => {
     return async( dispatch ) => {
         await firebase.auth().signOut();
 
-        dispatch( logout() )
+        dispatch( logout() );
+        dispatch( noteLogout() );
     }
 
 }
